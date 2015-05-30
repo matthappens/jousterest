@@ -1,0 +1,60 @@
+{% extends 'base.html' %}
+{% block content %}
+
+
+<div class="starter-template">
+    <h2>Welcome to the template for the pin index</h2>
+    <ul class="list-unstyled">
+   <a href="/pins/create" class="btn btn-lg" data-toggle="modal" data-target="#pin-modal" >New</a>
+{% for pin in pins %}
+<li>
+    <a href="{{pin.link}}">{{pin.title}}, {{pin.caption}}</a>
+</li>
+{% endfor %}
+</ul>
+</div>
+{% endblock %}
+
+{% block modals %}
+<div class="modal fade" id="pin-modal">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">Modal title</h4>
+      </div>
+      <div class="modal-body">
+          <form action="{% url 'create-pin' %}" method="POST">
+              {% csrf_token %}
+
+              <div class="form-group">
+                <label for="{{pin_form.title.id_for_label}}">Title: </label>
+                {{pin_form.title}}
+              </div>
+              <div class="form-group">
+                <label for="{{pin_form.caption.id_for_label}}">Caption:</label>
+                {{pin_form.caption}}
+              </div>
+              <div class="form-group">
+                <label form="{{pin_form.link.id_for_label}}">Link:</label>
+                {{pin_form.link}}
+              </div>
+              <div class="form-group">
+                <label for="{{pin_form.image_link.id_for_label}}">Image Link:</label>
+                {{pin_form.image_link}}
+              </div>
+              <input type="submit" value="Submit" />
+          </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Save changes</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+{% endblock %}
+
+{% block js %}
+<script type="text/javascript">
+{% endblock %}
