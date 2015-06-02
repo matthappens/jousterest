@@ -1,58 +1,67 @@
 {% extends 'base.html' %}
 {% block content %}
+{% load site_tags %}
 
-
-<div class="starter-template">
-    <h2>Welcome to the template for the pin index</h2>
-    <ul class="list-unstyled">
-   <a href="/pins/create" class="btn btn-lg" data-toggle="modal" data-target="#pin-modal" >New</a>
-{% for pin in pins %}
-<li>
-    <a href="{{pin.link}}">{{pin.title}}, {{pin.caption}}</a>
-</li>
-{% endfor %}
-</ul>
+<div class="pin-content">
+    <h2>
+      {{request.user.first_name|upper}}'S PINS
+      <a href="/pins/create" class="btn btn-lg btn-forest-green" data-toggle="modal" data-target="#pin-modal" >+</a>
+    </h2>
+     <div class="grid">
+    {% for pin in pins %}
+    <div class="pin-content-item">
+        <a href="{{pin.link}}">{{pin.title}}, {{pin.caption}}</a>
+        <img src="{{pin.image_link}}">
+    </div>
+    {% endfor %}
+    </div>
 </div>
 {% endblock %}
 
 {% block modals %}
-<div class="modal fade" id="pin-modal">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title">Modal title</h4>
-      </div>
-      <div class="modal-body">
-          <form action="{% url 'create-pin' %}" method="POST">
+<form action="{% url 'create-pin' %}" method="POST" class="form-horizontal">
+  <div class="modal fade" id="pin-modal">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title">New Pin</h4>
+        </div>
+        <div class="modal-body">
               {% csrf_token %}
-
               <div class="form-group">
-                <label for="{{pin_form.title.id_for_label}}">Title: </label>
-                {{pin_form.title}}
+                <label class="control-label col-sm-3" for="{{pin_form.title.id_for_label}}">title: </label>
+                <div class="col-sm-9">
+                  {{pin_form.title|add_css:"form-control"}}
+                </div>
               </div>
               <div class="form-group">
-                <label for="{{pin_form.caption.id_for_label}}">Caption:</label>
-                {{pin_form.caption}}
+                <label class="control-label col-sm-3" for="{{pin_form.caption.id_for_label}}">caption:</label>
+                <div class="col-sm-9">
+                  {{pin_form.caption|add_css:"form-control"}}
+                </div>
               </div>
               <div class="form-group">
-                <label form="{{pin_form.link.id_for_label}}">Link:</label>
-                {{pin_form.link}}
+                <label class="control-label col-sm-3" form="{{pin_form.link.id_for_label}}">link:</label>
+                <div class="col-sm-9">
+                  {{pin_form.link|add_css:"form-control"}}
+                </div>
               </div>
               <div class="form-group">
-                <label for="{{pin_form.image_link.id_for_label}}">Image Link:</label>
-                {{pin_form.image_link}}
+                <label class="control-label col-sm-3" for="{{pin_form.image_link.id_for_label}}">image link:</label>
+                <div class="col-sm-9">
+                  {{pin_form.image_link|add_css:"form-control"}}
+                </div>
               </div>
-              <input type="submit" value="Submit" />
-          </form>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary">Save changes</button>
-      </div>
-    </div><!-- /.modal-content -->
-  </div><!-- /.modal-dialog -->
-</div><!-- /.modal -->
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          <input type="button" class="btn btn-primary btn-forest-green" value="Save Changes">
+        </div>
+      </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+  </div><!-- /.modal -->
+</form>
 {% endblock %}
 
 {% block js %}

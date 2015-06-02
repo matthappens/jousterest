@@ -1,0 +1,64 @@
+body{
+  font-family: Arial, Helvetica, sans-serif;
+}
+.login-block{
+  color: #fff;
+}
+.login-header{
+
+}
+
+.center-block{
+  position: absolute;
+  top:0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  margin: auto;
+  width: 300px;
+  height: 200px;
+}
+.control-label{
+  font-size: 20px;
+  font-weight: normal;
+}
+.pin-content{
+  background-color: rgba(0,0,0,0.5);
+  margin-top: 80px;
+}
+
+.pin-content h2{
+  text-align: center;
+  color: rgb(53, 134, 90);
+  padding-top: 20px;
+  font-size: 30px;
+  font-weight: 100;
+}
+.pin-content-item{
+  width: 200px;
+  float: left;
+  border: 2px dotted rgb(53,134,90);
+  border-radius: 5px;
+  padding: 10px;
+}
+.pin-content-item img{
+  width: 180px;
+}
+
+.modal-content{
+  color: #fff;
+  background-color: #222;
+}
+.modal-header{
+  color: rgb(53, 134, 90);
+}
+.btn-forest-green{
+  background-color: rgb(53, 134, 90);
+  border-color: rgb(53, 134, 90);
+  color: #fff;
+}
+.grid:after {
+  content: '';
+  display: block;
+  clear: both;
+}
