@@ -1,4 +1,12 @@
 {% extends 'base.html' %}
+{% block css%}
+<style type="text/css">
+body{
+  background-position: 50% 0%;
+}
+</style>
+{% endblock %}
+
 {% block content %}
 {% load site_tags %}
 
@@ -12,12 +20,12 @@
     <div class="pin-content-item">
         <h3 class="text-center">
           <a href="{{pin.link}}">{{pin.title|lower}}</a>
-          <a href="{% url 'delete-pin' pin.id %}" class="delete-pin">
-            <span aria-hidden="true">&times;</span>
-          </a>
+          <form action="{% url 'delete-pin' pin.id %}" class="delete-form" method="post">
+            <input type="submit" value="x" class="confirm-delete">
+          </form>
         </h3>
         <img src="{{pin.image_link}}">
-        <p class="pin-create-date text-center">{{pin.create_date}}</p>
+        <p class="pin-create-date text-center">{{pin.caption}}</p>
     </div>
     {% endfor %}
     </div>
@@ -90,20 +98,18 @@
 <script type="text/javascript">
   $(document).ready(function(){
     // handle deletes
-    var csrf_token = $("{% csrf_token %}").val();
-    $(".delete-pin").each(function(index){
-      var $this = $(this);
+    $(".grid").masonry({
+      itemSelector:".pin-content-item",
+      
+      gutter : 10,
+    })
 
-      $this.click(function(e){
+    $('.confirm-delete').click(function(e){
+      var cont = confirm("Delete this pin?");
+      if (!cont){
         e.preventDefault();
-        $.post(
-          $this.attr('href'),
-          {'csrfmiddelwaretoken': csrf_token},
-         function(response){
-            $this.closest('pin-content-item').remove();
-         });
-      });
-    });
+      }
+    })
   });
 </script>
 {% endblock %}

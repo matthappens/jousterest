@@ -6,11 +6,14 @@
     <link rel="stylesheet" type="text/css" href="{% static 'site/css/pins.css' %}">
     <style type="text/css">
     body{
-      background-image: url("{% static 'pins/img/BG.png' %}");
+      background-image: url("{% static 'site/img/BG.png' %}");
       background-position: 50% 50%;
       background-color: #000;
     }
     </style>
+    {% block css %}
+    {% endblock %}
+    <title>Jousterest</title>
 </head>
 <body>
     <nav class="navbar navbar-inverse navbar-fixed-top">
@@ -46,6 +49,7 @@
     </div>
     <script type="text/javascript" src="{% static 'site/js/vendor/jquery-2.1.4.min.js' %}"></script>
     <script type="text/javascript" src="{% static 'site/js/vendor/bootstrap.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'site/js/vendor/jquery.masonry.js' %}"></script>
     {% block js %}
     {% endblock %}
 </body>

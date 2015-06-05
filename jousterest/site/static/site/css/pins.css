@@ -24,6 +24,10 @@ body{
   margin-top: 80px;
 }
 
+.grid{
+  max-width: 1100px;
+}
+
 .pin-content h2{
   text-align: center;
   color: rgb(53, 134, 90);
@@ -33,11 +37,13 @@ body{
 }
 .pin-content-item{
   width: 250px;
+  height: 500px;
   float: left;
   border-radius: 5px;
   padding: 10px;
-  margin: 10px;
+  margin-bottom: 10px;
   background-color: rgba(32,32,32,0.5);
+  display: block;
 }
 
 .pin-content-item h3{
@@ -51,6 +57,7 @@ body{
 
 .pin-content-item img{
   width: 230px;
+  overflow: hidden;
 }
 
 .pin-create-date{
@@ -88,4 +95,11 @@ body{
 }
 .pagination a{
   background-color: rbg(157,157,157);
+}
+.delete-form{
+  display: inline-block;
+}
+.delete-form input{
+  background-color: transparent;
+  border-style: none;
 }

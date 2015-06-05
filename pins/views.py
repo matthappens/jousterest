@@ -17,8 +17,12 @@ from .forms import PinForm
 def index(request):
     """ return a paginated list of Pins
     """
-    pin_objects = Pin.objects.filter(user=request.user)
-    paginator = Paginator(pin_objects, request.GET.get('count', settings.DEFAULT_PAGINATION))
+    pin_objects = Pin.objects.filter(user=request.user)\
+                             .order_by('-create_date')
+    paginator = Paginator(
+        pin_objects,
+        request.GET.get('count', settings.DEFAULT_PAGINATION)
+        )
     page = request.GET.get('page', 1)
 
     try:
