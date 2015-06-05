@@ -5,17 +5,39 @@
 <div class="pin-content">
     <h2>
       {{request.user.first_name|upper}}'S PINS
-      <a href="/pins/create" class="btn btn-lg btn-forest-green" data-toggle="modal" data-target="#pin-modal" >+</a>
+      <a href="#" class="btn btn-lg btn-light-gray" data-toggle="modal" data-target="#pin-modal" >+</a>
     </h2>
      <div class="grid">
     {% for pin in pins %}
     <div class="pin-content-item">
-        <a href="{{pin.link}}">{{pin.title}}, {{pin.caption}}</a>
+        <h3 class="text-center">
+          <a href="{{pin.link}}">{{pin.title|lower}}</a>
+          <a href="{% url 'delete-pin' pin.id %}" class="delete-pin">
+            <span aria-hidden="true">&times;</span>
+          </a>
+        </h3>
         <img src="{{pin.image_link}}">
+        <p class="pin-create-date text-center">{{pin.create_date}}</p>
     </div>
     {% endfor %}
     </div>
 </div>
+<nav class="text-center">
+  <ul class="pagination">
+    <li>
+      {% get_previous_page page as prev_page %}
+      <a href="./?page={{prev_page}}" aria-label="Previous">
+        <span aria-hidden="true">&laquo;</span>
+      </a>
+    </li>
+    <li>
+      {% get_next_page page num_pages as next_page %}
+      <a href="./?page={{next_page}}" aria-label="Next">
+        <span aria-hidden="true">&raquo;</span>
+      </a>
+    </li>
+  </ul>
+</nav>
 {% endblock %}
 
 {% block modals %}
@@ -56,7 +78,7 @@
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-          <input type="button" class="btn btn-primary btn-forest-green" value="Save Changes">
+          <input type="submit" class="btn btn-primary btn-forest-green" value="Submit">
         </div>
       </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->
@@ -66,4 +88,22 @@
 
 {% block js %}
 <script type="text/javascript">
+  $(document).ready(function(){
+    // handle deletes
+    var csrf_token = $("{% csrf_token %}").val();
+    $(".delete-pin").each(function(index){
+      var $this = $(this);
+
+      $this.click(function(e){
+        e.preventDefault();
+        $.post(
+          $this.attr('href'),
+          {'csrfmiddelwaretoken': csrf_token},
+         function(response){
+            $this.closest('pin-content-item').remove();
+         });
+      });
+    });
+  });
+</script>
 {% endblock %}

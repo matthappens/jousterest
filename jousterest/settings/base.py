@@ -100,4 +100,4 @@ USE_TZ = True
 STATIC_URL = '/static/'
 
 # Pagination Settings
-DEFAULT_PAGINATION = 1
+DEFAULT_PAGINATION = 10

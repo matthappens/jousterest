@@ -3,7 +3,7 @@
 <head>
     {% load staticfiles %}
     <link rel="stylesheet" type="text/css" href="{% static 'site/css/vendor/bootstrap.min.css' %}">
-    <link rel="stylesheet" type="text/css" href="{% static 'pins/css/pins.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'site/css/pins.css' %}">
     <style type="text/css">
     body{
       background-image: url("{% static 'pins/img/BG.png' %}");
@@ -44,8 +44,8 @@
     {% block modals %}
     {% endblock %}
     </div>
-    <script type="text/javascript" src="{% static 'pins/js/vendor/jquery-2.1.4.min.js' %}"></script>
-    <script type="text/javascript" src="{% static 'pins/js/vendor/bootstrap.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'site/js/vendor/jquery-2.1.4.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'site/js/vendor/bootstrap.min.js' %}"></script>
     {% block js %}
     {% endblock %}
 </body>

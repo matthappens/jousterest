@@ -4,8 +4,9 @@ from django.views.decorators.http import require_POST
 from django.core.urlresolvers import reverse
 from django.core.paginator import Paginator
 from django.core.paginator import EmptyPage
-from django.core.paginator import PageNotAnInteger
+from django.views.decorators.csrf import csrf_exempt
 from django.shortcuts import render
+from django.shortcuts import get_object_or_404
 from django.contrib.auth.decorators import login_required
 
 from .models import Pin
@@ -16,19 +17,19 @@ from .forms import PinForm
 def index(request):
     """ return a paginated list of Pins
     """
-    pin_objects = Pin.objects.all()
+    pin_objects = Pin.objects.filter(user=request.user)
     paginator = Paginator(pin_objects, request.GET.get('count', settings.DEFAULT_PAGINATION))
-    page = request.GET.get('page')
+    page = request.GET.get('page', 1)
 
     try:
         pins = paginator.page(page)
-    except PageNotAnInteger:
-        pins = paginator.page(1)
     except EmptyPage:
         pins = paginator.page(paginator.num_pages)
     context = {
         "pins": pins,
-        "pin_form": PinForm
+        "pin_form": PinForm,
+        "page": page,
+        "num_pages": paginator.num_pages
     }
     return render(request, "pins/index.html", context)
 
@@ -36,7 +37,8 @@ def index(request):
 @login_required
 @require_POST
 def create_pin(request):
-    form = PinForm(request.POST)
+    pin = Pin(user=request.user)
+    form = PinForm(request.POST, instance=pin)
     if form.is_valid():
         form.save()
         return HttpResponseRedirect(reverse("pin-index"))
@@ -45,21 +47,17 @@ def create_pin(request):
 @login_required
 @require_POST
 def update_pin(request, pin_id):
-    try:
-        pin = Pin.objects.get(pk=pin_id)
-        form = PinForm(request.POST, pin)
-        if form.is_valid():
-            form.save()
-            return HttpResponseRedirect(reverse("pin-index"))
-    except Pin.DoesNotExist:
-        pass  # @TODO return appropriate error
+    pin = get_object_or_404(Pin, pk=pin_id)
+    form = PinForm(request.POST, pin)
+    if form.is_valid():
+        form.save()
+    return HttpResponseRedirect(reverse("pin-index"))
 
 
 @login_required
 @require_POST
+@csrf_exempt
 def delete_pin(request, pin_id):
-    try:
-        pin = Pin.objects.get(pk=pin_id)
-        pin.delete()
-    except Pin.DoesNotExist():
-        pass  # @TODO return appropriate error
+    pin = get_object_or_404(Pin, pk=pin_id)
+    pin.delete()
+    return HttpResponseRedirect(reverse("pin-index"))
